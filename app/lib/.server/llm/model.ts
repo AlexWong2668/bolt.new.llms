@@ -43,6 +43,16 @@ export function getOllamaModel(model: string) {
   return ollama(model);
 }
 
+// 新增处理 Openrouter 的函数
+export function getOpenrouterModel(apiKey: string, model: string) {
+  const openrouter = createOpenAI({
+    baseURL: 'https://api.openrouter.ai/v1', // 假设的 Openrouter API base URL
+    apiKey,
+  });
+
+  return openrouter(model);
+}
+
 export function getModel(provider: string, model: string, env: Env) {
   const apiKey = getAPIKey(env, provider);
 
@@ -53,6 +63,8 @@ export function getModel(provider: string, model: string, env: Env) {
       return getOpenAIModel(apiKey, model);
     case 'Groq':
       return getGroqModel_cn(apiKey, model);
+    case 'Openrouter': // 新增对 Openrouter 的支持
+      return getOpenrouterModel(apiKey, model);
     default:
       return getOllamaModel(model);
   }
